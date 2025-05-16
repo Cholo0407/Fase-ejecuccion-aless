@@ -1,24 +1,27 @@
 import jsonwebtoken from "jsonwebtoken"; // Token
 import bcryptjs from "bcryptjs"; // Encriptar
 
-import customersModel from "../models/customers.js";
+import employeesModel from "../models/employees.js";
 import { config } from "../config.js"
 
-const registerCustomersController = {};
+const registerEmployeesController = {};
 
-registerCustomersController.registerCustomer = async (req, res) => {
+registerEmployeesController.registerEmployee = async (req, res) => {
     const {
         nombre,
         correo,
         contrasenia,
         telefono,
         direccion,
-        DUI 
+        puesto,
+        fecha_contratacion,
+        salario,
+        DUI,
     } = req.body;
 
     try {
         //verificar repeticion
-        const existCustomer =  await customersModel.findOne({ correo });
+        const existCustomer =  await employeesModel.findOne({ correo });
         if(existCustomer) {
             return res.json({ message: "Email is already registered"})
         }
@@ -27,12 +30,15 @@ registerCustomersController.registerCustomer = async (req, res) => {
         const passwordHash = await bcryptjs.hash(contrasenia, 10);
 
         //Guardar
-        const newCustomer = new customersModel({
+        const newCustomer = new employeesModel({
             nombre,
             correo,
             contrasenia: passwordHash,
             telefono,
             direccion,
+            puesto,
+            fecha_contratacion,
+            salario,
             DUI: DUI || null
         });
 
@@ -46,15 +52,15 @@ registerCustomersController.registerCustomer = async (req, res) => {
             (error, token) => {
                 if (error) console.log ("error: "+error)
                 
-                res.cookie("authToken", token)
-                res.json({message: "Customer registered"})
+                res.cookie("authTokenEmployee", token)
+                res.json({message: "employee registered"})
             }
         )
 
     } catch (error) {
         console.log("error: "+error)
-        res.json({message: "Error saving customer"})
+        res.json({message: "Error saving employee"})
     }
 }
 
-export default registerCustomersController;
+export default registerEmployeesController;
