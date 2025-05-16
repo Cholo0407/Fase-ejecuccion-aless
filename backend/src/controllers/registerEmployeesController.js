@@ -52,7 +52,7 @@ registerEmployeesController.registerEmployee = async (req, res) => {
             (error, token) => {
                 if (error) console.log ("error: "+error)
                 
-                res.cookie("authTokenEmployee", token)
+                res.cookie("authToken", token)
                 res.json({message: "employee registered"})
             }
         )
