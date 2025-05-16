@@ -34,7 +34,6 @@ const customersSchema = new Schema(
         },
         DUI:{
             type: String,
-            require: true,
             minlength: [10, 'El DUI debe tener al menos 10 caracteres'],
         }
     },
